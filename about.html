@@ -60,7 +60,7 @@
         .logo-img { height: 50px; width: 50px; aspect-ratio: 1 / 1; object-fit: contain; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1)); }
 
         nav { display: flex; gap: 30px; align-items: center; }
-        nav a { text-decoration: none; color: var(--deep-black); font-weight: 700; font-size: 20px; transition: 0.3s; }
+        nav a { text-decoration: none; color: var(--deep-black); font-weight: 700; font-size: 22px; transition: 0.3s; }
         nav a:hover { color: var(--saffron-orange); transform: translateY(-3px); }
 
         nav a.nav-btn { 
@@ -79,9 +79,18 @@
             z-index: 1001; border-radius: 12px; border-top: 3px solid var(--saffron-orange);
             padding: 10px 0; margin-top: 25px; left: 50%; transform: translateX(-50%);
         }
+         /* Update your dropdown hover rule to look exactly like this */
+.dropdown > a {
+    display: inline-block; /* This single line allows the lift animation to work */
+}
+
+.dropdown:hover > a {
+    color: var(--saffron-orange);
+    transform: translateY(-3px);
+}
         /* Invisible bridge to prevent dropdown from closing when cursor moves to it */
         .dropdown::after { content: ''; position: absolute; top: 100%; left: 0; right: 0; height: 30px; }
-        .dropdown-content a { color: var(--deep-black); padding: 12px 25px; text-decoration: none; display: block; font-size: 18px !important; text-align: center; border-bottom: 1px solid rgba(0,0,0,0.03); }
+        .dropdown-content a { color: var(--deep-black); padding: 12px 25px; text-decoration: none; display: block; font-size: 20px !important; text-align: center; border-bottom: 1px solid rgba(0,0,0,0.03); }
         .dropdown-content a:last-child { border-bottom: none; }
         .dropdown-content a:hover { background-color: var(--warm-white); color: var(--saffron-orange); transform: none; }
         .dropdown:hover .dropdown-content { display: block; }
@@ -181,6 +190,11 @@
             .dropdown { width: 100%; text-align: center; }
             .dropdown-content { position: static; box-shadow: none; border: 1px solid rgba(245, 166, 35, 0.2); transform: none; margin-top: 10px; min-width: 100%; }
             
+            /* Disables stuck CSS hover on touch screens */
+    .dropdown:hover .dropdown-content { display: none; }
+    /* The class JavaScript will use to toggle the menu */
+    .dropdown-content.mobile-show { display: block !important; }
+
             /* Fixed Hero for Mobile: Proper height, scrolling feel, and bottom clearance */
             .hero { 
                 background-attachment: scroll; 
@@ -237,17 +251,20 @@
         <nav>
             <a href="index.html">Home</a>
             <a href="about.html" style="color: var(--saffron-orange);">About</a>
-            <a href="#">Spiritual Activities</a>
+            
             
             <div class="dropdown">
-                <a href="#" style="cursor: default;">Other Activities <i class="fa fa-caret-down" style="font-size: 14px; margin-left: 5px;"></i></a>
+                <a href="#" style="cursor: default;">Our Activities<i class="fa fa-caret-down" style="font-size: 14px; margin-left: 5px;"></i></a>
                 <div class="dropdown-content">
-                    <a href="yuvaka-sangha.html">Vivekananda Yuvaka Sangha</a>
-                    <a href="balaka-sangha.html">Vivekananda Balaka Sangha</a>
-                    <a href="#">Vidyarthi Mandiram</a>
-                    <a href="#">Rural Development</a>
+                    <a href="spiritual-activities.html">Spiritual Activities</a>
+                    <a href="children-youth.html">Children & Youth</a>
+                    <a href="educational-activities.html">Educational Activities</a>
+                    <a href="cultural-activities.html">Cultural Activities</a>
+                    <a href="service-activities.html">Service Activities</a>
                 </div>
             </div>
+
+            <a href="#">News & Media</a>
 
             <a href="#" class="nav-btn">Donate</a>
         </nav>
@@ -256,7 +273,7 @@
     <section class="hero">
         <h1>Our Heritage & Legacy</h1>
         <div class="hero-quote">
-            "A century of spiritual awakening and selfless service."
+            "More than a Century of Spiritual Awakening and Selfless Service."
         </div>
     </section>
 
@@ -382,6 +399,17 @@
         if ('scrollRestoration' in history) {
             history.scrollRestoration = 'manual';
         }
+        // Mobile Dropdown Toggle Logic
+    const dropdownLink = document.querySelector('.dropdown > a');
+    const dropdownMenu = document.querySelector('.dropdown-content');
+
+    dropdownLink.addEventListener('click', function(e) {
+        // Only run this script if the screen is mobile-sized
+        if (window.innerWidth <= 900) {
+            e.preventDefault(); 
+            dropdownMenu.classList.toggle('mobile-show');
+        }
+    });
     </script>
 
 </body>
