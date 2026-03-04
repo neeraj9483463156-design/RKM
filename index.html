@@ -71,7 +71,7 @@ body { overflow-x: hidden; width: 100%; margin: 0; padding: 0; }
     filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1)); 
 }
         nav { display: flex; gap: 30px; align-items: center; }
-        nav a { text-decoration: none; color: var(--deep-black); font-weight: 700; font-size: 20px; transition: 0.3s; }
+        nav a { text-decoration: none; color: var(--deep-black); font-weight: 700; font-size: 22px; transition: 0.3s; }
         nav a:hover { color: var(--saffron-orange); transform: translateY(-3px); }
 
         nav a.nav-btn { 
@@ -80,6 +80,32 @@ body { overflow-x: hidden; width: 100%; margin: 0; padding: 0; }
             box-shadow: 0 4px 12px rgba(230, 90, 0, 0.2);
             transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
+
+        /* --- DROPDOWN NAVIGATION RULES --- */
+        .dropdown { position: relative; display: inline-block; }
+        .dropdown-content {
+            display: none; position: absolute; background-color: var(--pure-white);
+            min-width: 270px; box-shadow: 0px 8px 20px rgba(0,0,0,0.12);
+            z-index: 1001; border-radius: 12px; border-top: 3px solid var(--saffron-orange);
+            padding: 10px 0; margin-top: 25px; left: 50%; transform: translateX(-50%);
+        }
+
+        /* Update your dropdown hover rule to look exactly like this */
+.dropdown > a {
+    display: inline-block; /* This single line allows the lift animation to work */
+}
+
+.dropdown:hover > a {
+    color: var(--saffron-orange);
+    transform: translateY(-3px);
+}
+        /* Invisible bridge to prevent dropdown from closing when cursor moves to it */
+        .dropdown::after { content: ''; position: absolute; top: 100%; left: 0; right: 0; height: 30px; }
+        .dropdown-content a { color: var(--deep-black); padding: 12px 25px; text-decoration: none; display: block; font-size: 20px !important; text-align: center; border-bottom: 1px solid rgba(0,0,0,0.03); }
+        .dropdown-content a:last-child { border-bottom: none; }
+        .dropdown-content a:hover { background-color: var(--warm-white); color: var(--saffron-orange); transform: none; }
+        .dropdown:hover .dropdown-content { display: block; }
+        
 
         /* --- HERO --- */
         .hero {
@@ -243,6 +269,15 @@ body { overflow-x: hidden; width: 100%; margin: 0; padding: 0; }
     nav a { font-size: 18px; }
     nav a.nav-btn { font-size: 16px; padding: 8px 20px; margin-top: 5px; }
 
+    /* Mobile Dropdown Fix */
+    .dropdown { width: 100%; text-align: center; }
+    .dropdown-content { position: static; box-shadow: none; border: 1px solid rgba(245, 166, 35, 0.2); transform: none; margin-top: 10px; min-width: 100%; }
+    
+    /* Disables stuck CSS hover on touch screens */
+    .dropdown:hover .dropdown-content { display: none; }
+    /* The class JavaScript will use to toggle the menu */
+    .dropdown-content.mobile-show { display: block !important; }
+    
     /* 3. Hero Section: Fluid Height & Text Wrapping + Smooth Scroll Fix */
     .hero { background-attachment: scroll; height: auto; min-height: 100vh; padding: 60px 20px 80px 20px; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }    .hero h1 { font-size: 46px; line-height: 1.2; margin-bottom: 20px; overflow-wrap: break-word; }
     .hero-quote { font-size: 22px; padding: 0 15px; }
@@ -278,9 +313,22 @@ body { overflow-x: hidden; width: 100%; margin: 0; padding: 0; }
         <nav>
             <a href="#">Home</a>
             <a href="about.html">About</a>
-            <a href="#">Spiritual Activities</a>
-            <a href="#">Other Activities</a>
-            <a href="#" class="nav-btn">Donate</a>
+            
+            
+            <div class="dropdown">
+                <a href="#" style="cursor: default;">Our Activities<i class="fa fa-caret-down" style="font-size: 14px; margin-left: 5px;"></i></a>
+                <div class="dropdown-content">
+                    <a href="spiritual-activities.html">Spiritual Activities</a>
+                    <a href="children-youth.html">Children & Youth</a>
+                    <a href="educational-activities.html">Educational Activities</a>
+                    <a href="cultural-activities.html">Cultural Activities</a>
+                    <a href="service-activities.html">Service Activities</a>
+                </div>
+            </div>
+
+            <a href="news-media.html">News & Media</a>
+            <a href="donate.html" class="nav-btn">Donate</a>
+
         </nav>
     </header>
 
@@ -400,6 +448,17 @@ body { overflow-x: hidden; width: 100%; margin: 0; padding: 0; }
     if ('scrollRestoration' in history) {
         history.scrollRestoration = 'manual';
     }
+    // Mobile Dropdown Toggle Logic
+    const dropdownLink = document.querySelector('.dropdown > a');
+    const dropdownMenu = document.querySelector('.dropdown-content');
+
+    dropdownLink.addEventListener('click', function(e) {
+        // Only run this script if the screen is mobile-sized
+        if (window.innerWidth <= 900) {
+            e.preventDefault(); 
+            dropdownMenu.classList.toggle('mobile-show');
+        }
+    });
 </script>
 
 </body>
