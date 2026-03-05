@@ -285,15 +285,43 @@ body { overflow-x: hidden; width: 100%; margin: 0; padding: 0; }
     nav a { font-size: 18px; }
     nav a.nav-btn { font-size: 16px; padding: 8px 20px; margin-top: 5px; }
 
-    /* Mobile Dropdown Fix */
-    .dropdown { width: 100%; text-align: center; }
-/* Update these two lines inside your @media (max-width: 900px) block */
-.dropdown:hover .dropdown-content { visibility: hidden; opacity: 0; }
-.dropdown-content.mobile-show { visibility: visible !important; opacity: 1 !important; transform: translateY(0) translateX(-50%) !important; pointer-events: auto !important; }    
-    /* Disables stuck CSS hover on touch screens */
-    .dropdown:hover .dropdown-content { display: none; }
-    /* The class JavaScript will use to toggle the menu */
-    .dropdown-content.mobile-show { display: block !important; }
+   /* --- PERFECTED MOBILE DROPDOWN --- */
+
+/* 1. Reset Desktop Hover (Prevents 'Stuck' Menus) */
+.dropdown:hover .dropdown-content { 
+    visibility: hidden; 
+    opacity: 0; 
+    display: block; /* Keep as block so it can animate */
+}
+
+/* 2. Base State for Mobile Menu */
+.dropdown-content {
+    position: static; 
+    display: block;
+    visibility: hidden;
+    opacity: 0;
+    max-height: 0; /* The 'Rolling' start point */
+    overflow: hidden;
+    width: 100%;
+    transform: translateY(-10px); 
+    transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1); /* Premium Easing */
+    box-shadow: none;
+    border: none;
+    margin-top: 0;
+    left: 0;
+    transform: none; /* Reset desktop centering */
+}
+
+/* 3. The 'Rolling' Active State */
+.dropdown-content.mobile-show {
+    visibility: visible !important;
+    opacity: 1 !important;
+    max-height: 500px; /* Unrolls the menu downward */
+    transform: translateY(0) !important;
+    margin-top: 10px;
+    padding: 10px 0;
+    border-top: 1px solid rgba(245, 166, 35, 0.2);
+}
     
     /* 3. Hero Section: Fluid Height & Text Wrapping + Smooth Scroll Fix */
     .hero { background-attachment: scroll; height: auto; min-height: 100vh; padding: 60px 20px 80px 20px; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }    .hero h1 { font-size: 46px; line-height: 1.2; margin-bottom: 20px; overflow-wrap: break-word; }
@@ -466,16 +494,16 @@ body { overflow-x: hidden; width: 100%; margin: 0; padding: 0; }
         history.scrollRestoration = 'manual';
     }
     // Mobile Dropdown Toggle Logic
-    const dropdownLink = document.querySelector('.dropdown > a');
-    const dropdownMenu = document.querySelector('.dropdown-content');
+const dropdownLink = document.querySelector('.dropdown > a');
+const dropdownMenu = document.querySelector('.dropdown-content');
 
-    dropdownLink.addEventListener('click', function(e) {
-        // Only run this script if the screen is mobile-sized
-        if (window.innerWidth <= 900) {
-            e.preventDefault(); 
-            dropdownMenu.classList.toggle('mobile-show');
-        }
-    });
+dropdownLink.addEventListener('click', function(e) {
+    if (window.innerWidth <= 900) {
+        e.preventDefault(); 
+        // Simply toggles the class; CSS 'transition' handles the rolling speed
+        dropdownMenu.classList.toggle('mobile-show');
+    }
+});
 </script>
 
 </body>
