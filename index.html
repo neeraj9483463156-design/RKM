@@ -84,11 +84,23 @@ body { overflow-x: hidden; width: 100%; margin: 0; padding: 0; }
         /* --- DROPDOWN NAVIGATION RULES --- */
         .dropdown { position: relative; display: inline-block; }
         .dropdown-content {
-            display: none; position: absolute; background-color: var(--pure-white);
-            min-width: 270px; box-shadow: 0px 8px 20px rgba(0,0,0,0.12);
-            z-index: 1001; border-radius: 12px; border-top: 3px solid var(--saffron-orange);
-            padding: 10px 0; margin-top: 25px; left: 50%; transform: translateX(-50%);
-        }
+    display: block; /* Always 'block' so it can animate */
+    visibility: hidden; /* Keeps it hidden from clicks/readers when closed */
+    opacity: 0; /* Fully transparent */
+    position: absolute; 
+    background-color: var(--pure-white);
+    min-width: 270px; 
+    box-shadow: 0px 12px 30px rgba(0,0,0,0.1);
+    z-index: 1001; 
+    border-radius: 12px; 
+    border-top: 3px solid var(--saffron-orange);
+    padding: 10px 0; 
+    margin-top: 15px; 
+    left: 50%; 
+    transform: translateX(-50%) translateY(10px); /* Starts slightly lower */
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1); /* Premium easing */
+    pointer-events: none; /* Prevents accidental clicks when hidden */
+}
 
         /* Update your dropdown hover rule to look exactly like this */
 .dropdown > a {
@@ -104,8 +116,12 @@ body { overflow-x: hidden; width: 100%; margin: 0; padding: 0; }
         .dropdown-content a { color: var(--deep-black); padding: 12px 25px; text-decoration: none; display: block; font-size: 20px !important; text-align: center; border-bottom: 1px solid rgba(0,0,0,0.03); }
         .dropdown-content a:last-child { border-bottom: none; }
         .dropdown-content a:hover { background-color: var(--warm-white); color: var(--saffron-orange); transform: none; }
-        .dropdown:hover .dropdown-content { display: block; }
-        
+.dropdown:hover .dropdown-content {
+    visibility: visible;
+    opacity: 1;
+    transform: translateX(-50%) translateY(0); /* Glides up to natural position */
+    pointer-events: auto;
+}        
 
         /* --- HERO --- */
         .hero {
@@ -271,8 +287,9 @@ body { overflow-x: hidden; width: 100%; margin: 0; padding: 0; }
 
     /* Mobile Dropdown Fix */
     .dropdown { width: 100%; text-align: center; }
-    .dropdown-content { position: static; box-shadow: none; border: 1px solid rgba(245, 166, 35, 0.2); transform: none; margin-top: 10px; min-width: 100%; }
-    
+/* Update these two lines inside your @media (max-width: 900px) block */
+.dropdown:hover .dropdown-content { visibility: hidden; opacity: 0; }
+.dropdown-content.mobile-show { visibility: visible !important; opacity: 1 !important; transform: translateY(0) translateX(-50%) !important; pointer-events: auto !important; }    
     /* Disables stuck CSS hover on touch screens */
     .dropdown:hover .dropdown-content { display: none; }
     /* The class JavaScript will use to toggle the menu */
